@@ -80,6 +80,18 @@ all[c(524, 1299), c('SalePrice', 'GrLivArea', 'OverallQual')]
 
 
 ##### Missing data, label encoding, and factorizing variables - START #####
+NAcol <- which(colSums(is.na(all)) > 0)
+sort(colSums(sapply(all[NAcol], is.na)), decreasing = TRUE)
+cat('There are', length(NAcol), 'columns with missing values')
+
+## impute missing data ##
+# 1. Garage variables (7 related variables)
+# Two of those have one NA (GarageCars and GarageArea), one has 157 NAs (GarageType), 4 variables have 159 NAs.
+
+# replace all 159 missing GarageYrBlt: Year garage was built, values with the values in YearBuilt if no remodeling or additions
+all$GarageYrBlt[is.na(all$GarageYrBlt)] <- all$YearBuilt[is.na(all$GarageYrBlt)]
+
+
 
 
 ##### Missing data, label encoding, and factorizing variables - END #####
